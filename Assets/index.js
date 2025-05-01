@@ -1,5 +1,7 @@
+
 const apiUrl = 'https://api.open-meteo.com/v1/forecast';
 const geocodingUrl = 'https://geocoding-api.open-meteo.com/v1/search';
+
 
 const searchForm = document.getElementById('searchForm');
 const cityInput = document.getElementById('cityInput');
@@ -12,31 +14,39 @@ const windElem = document.querySelector('.wind-value');
 const weatherIcon = document.getElementById('weatherIcon');
 const loader = document.getElementById('loader');
 
+
 async function fetchWeather(city) {
-  loader.style.display = 'flex';
+  loader.style.display = 'flex'; 
 
   try {
+    
     const geoResponse = await fetch(`${geocodingUrl}?name=${city}&count=1`);
     const geoData = await geoResponse.json();
 
+    
     if (!geoData.results || geoData.results.length === 0) {
       throw new Error('City not found');
     }
 
+    
     const { latitude, longitude, name } = geoData.results[0];
 
+    
     const weatherResponse = await fetch(
       `${apiUrl}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,wind_speed_10m,weathercode,relative_humidity_2m&timezone=auto`
     );
     const data = await weatherResponse.json();
 
+    
     updateWeather(data, name);
   } catch (error) {
+    
     showError(error.message);
   } finally {
-    loader.style.display = 'none';
+    loader.style.display = 'none'; 
   }
 }
+
 
 function updateWeather(data, cityName) {
   const temperature = data.current.temperature_2m;
@@ -44,12 +54,14 @@ function updateWeather(data, cityName) {
   const humidity = data.current.relative_humidity_2m; 
   const weatherCode = data.current.weathercode;
 
+  
   cityNameElem.textContent = cityName;
   temperatureElem.textContent = `${Math.round(temperature)} °C`;
   descriptionElem.textContent = getWeatherDescription(weatherCode);
   humidityElem.textContent = `Humidity: ${humidity}%`; 
   windElem.textContent = `Wind: ${windSpeed} m/s`;
 
+  
   const description = getWeatherDescription(weatherCode).toLowerCase();
 
   if (description.includes('cloud')) {
@@ -61,14 +73,17 @@ function updateWeather(data, cityName) {
   } else if (description.includes('snow')) {
     weatherIcon.src = 'images/snow.png';
   } else {
-    weatherIcon.src = 'images/Weather.jpg';
+    weatherIcon.src = 'images/Weather.jpg'; 
   }
 
+  
   setWeatherBackground(description);
+
 
   weatherDisplay.classList.add('fade-in');
   setTimeout(() => weatherDisplay.classList.remove('fade-in'), 1000);
 }
+
 
 function getWeatherDescription(code) {
   const codes = {
@@ -92,7 +107,7 @@ function getWeatherDescription(code) {
     82: 'Violent rain showers',
     95: 'Thunderstorm',
   };
-  return codes[code] || 'Unknown';
+  return codes[code] || 'Unknown'; 
 }
 
 function showError(message) {
@@ -104,6 +119,7 @@ function showError(message) {
   weatherIcon.src = 'images/Weather.jpg';
   setWeatherBackground('default');
 }
+
 
 function setWeatherBackground(description) {
   if (description.includes('cloud')) {
@@ -122,11 +138,12 @@ function setWeatherBackground(description) {
   document.body.style.backgroundPosition = 'center';
 }
 
+
 searchForm.addEventListener('submit', (e) => {
-  e.preventDefault();
+  e.preventDefault(); 
   const city = cityInput.value.trim();
   if (city) {
     fetchWeather(city);
-    cityInput.value = '';
+    cityInput.value = ''; 
   }
 });
