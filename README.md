@@ -40,6 +40,8 @@ London
 Tokyo
 
 Nairobi
+ https://danbradleystakusopere.github.io/Simple-weather-website/
+ This is the git hub live link
 
 Author
 Developed by Dan Opere
