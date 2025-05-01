@@ -12,7 +12,7 @@
 ## How It Works
 
 1. User enters a city name in the input field.
-2. The app sends a request to the OpenWeatherMap API.
+2. The app sends a request to the OpenWeatherMap AP.
 3. Weather data is fetched and displayed on the page.
 
 ## Technologies Used
