@@ -19,19 +19,19 @@ async function fetchWeather(city) {
   loader.style.display = 'flex'; 
 
   try {
-    // Requesting geocoding API to get the latitude and longitude for the city
+    // Requests geocoding API to get the latitude and longitude for the city
     const geoResponse = await fetch(`${geocodingUrl}?name=${city}&count=1`);
-    const geoData = await geoResponse.json(); // Parse the JSON response
+    const geoData = await geoResponse.json(); 
 
-    // If the city is not found, throw an error
+    // If the city is not found,it brings an error
     if (!geoData.results || geoData.results.length === 0) {
       throw new Error('City not found');
     }
 
-    // Destructure the latitude, longitude, and city name from the response
+    // Destructures the latitude, longitude, and city name from the response
     const { latitude, longitude, name } = geoData.results[0];
 
-    // Requesting weather data from the weather API using the latitude and longitude
+    // Requests weather data from the weather API using the latitude and longitude
     const weatherResponse = await fetch(
       `${apiUrl}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,wind_speed_10m,weathercode,relative_humidity_2m&timezone=auto`
     );
@@ -49,21 +49,21 @@ async function fetchWeather(city) {
   }
 }
 
-// Function to update the weather data in the HTML elements
+// Used to update the weather data in the HTML elements
 function updateWeather(data, cityName) {
   const temperature = data.current.temperature_2m; 
   const windSpeed = data.current.wind_speed_10m; 
   const humidity = data.current.relative_humidity_2m; 
   const weatherCode = data.current.weathercode; 
 
-  // Update the city name, temperature, and weather details in the HTML
+  //Used to Update the city name, temperature, and weather details in the HTML
   cityNameElem.textContent = cityName;
   temperatureElem.textContent = `${Math.round(temperature)} °C`; 
   descriptionElem.textContent = getWeatherDescription(weatherCode); 
   humidityElem.textContent = `Humidity: ${humidity}%`; 
   windElem.textContent = `Wind: ${windSpeed} m/s`; 
 
-  // Set the weather icon based on the weather description
+  //Used to Set the weather icon based on the weather description
   const description = getWeatherDescription(weatherCode).toLowerCase();
   if (description.includes('cloud')) {
     weatherIcon.src = 'images/cloudy.png'; 
@@ -77,15 +77,15 @@ function updateWeather(data, cityName) {
     weatherIcon.src = 'images/Weather.jpg'; 
   }
 
-  // Set the background based on the weather description
+  // Used to Set the background based on the weather description
   setWeatherBackground(description);
 
-  // Add a fade-in animation for the weather display
+  //Used to Add a fade-in animation for the weather display
   weatherDisplay.classList.add('fade-in');
   setTimeout(() => weatherDisplay.classList.remove('fade-in'), 1000); 
 }
 
-// Function to map weather codes to human-readable descriptions
+//shows Function to map weather codes to human-readable descriptions
 function getWeatherDescription(code) {
   const codes = {
     0: 'Clear sky', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Overcast',
@@ -122,12 +122,12 @@ function setWeatherBackground(description) {
     document.body.style.backgroundImage = "url('images/default.jpg')"; 
   }
 
-  // Ensure the background image covers the screen and is centered
+  // Ensures the background image covers the screen and is centered
   document.body.style.backgroundSize = 'cover';
   document.body.style.backgroundPosition = 'center';
 }
 
-// Event listener for form submission
+// Event listener is for form submission
 searchForm.addEventListener('submit', (e) => {
   e.preventDefault(); 
   const city = cityInput.value.trim(); 
